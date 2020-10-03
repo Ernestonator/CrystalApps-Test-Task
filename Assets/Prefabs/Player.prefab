@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 6482681912727207175}
   - component: {fileID: 6482681912727207174}
   - component: {fileID: 6482681912727207173}
+  - component: {fileID: 425492177}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -237,7 +238,7 @@ CharacterController:
   m_Height: 1.89
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -253,13 +254,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c924f0eafe67491091e832907fc8f36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 10
-  jumpHeight: 5
+  playerSpeed: 7
+  jumpHeight: 3
   smoothRotationSpeed: 0.1
   gravity: -19.62
   cam: {fileID: 0}
   groundCheck: {fileID: 6482681911489359336}
-  groundDistance: 0.1
+  groundDistance: 0.3
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+--- !u!95 &425492177
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6482681912727207176}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1f3ca7d00a7f742408797103ead71416, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
