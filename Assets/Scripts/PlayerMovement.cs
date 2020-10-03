@@ -19,11 +19,16 @@ public class PlayerMovement : MonoBehaviour
     private float smoothVelocity;
     private bool isGrounded;
 
+    private Animator animator;
+    private string jumpTrigger = "jump";
+    private string crouchAnimatorBool = "isCrouching";
+
     private Vector3 velocity;
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -33,7 +38,17 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
-            Jump();
+            animator.SetTrigger(jumpTrigger);
+            //Jump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            animator.SetBool(crouchAnimatorBool, true);
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            animator.SetBool(crouchAnimatorBool, false);
         }
     }
 
