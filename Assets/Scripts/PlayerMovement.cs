@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask obstacleMasks;
 
     private CharacterController characterController;
+    private GameManager gameManager;
     private float smoothVelocity;
     private bool isGrounded;
 
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     private void Update()
@@ -102,8 +104,13 @@ public class PlayerMovement : MonoBehaviour
         if (LayerMaskCheck.IsInLayerMask(hit.gameObject, obstacleMasks))
         {
             Vector3 direction = (transform.position - hit.transform.position).normalized;
-            Obstacle swingingObstacle = hit.transform.GetComponent<Obstacle>();
-            StartCoroutine(AddForce(direction, swingingObstacle.pushPower, swingingObstacle.pushTime));
+            Obstacle obstacle = hit.transform.GetComponent<Obstacle>();
+            StartCoroutine(AddForce(direction, obstacle.pushPower, obstacle.pushTime));
+
+            if (obstacle.isDeadly)
+            {
+                gameManager.SetFailPopUp();
+            }
         }
     }
 }
