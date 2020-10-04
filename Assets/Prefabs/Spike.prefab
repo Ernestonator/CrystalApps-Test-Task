@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 693903174402451362}
   - component: {fileID: 693903174402451361}
   - component: {fileID: 693903174402451360}
+  - component: {fileID: 8824932255573563834}
   m_Layer: 9
   m_Name: Spike
   m_TagString: Untagged
@@ -554,3 +555,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8824932255573563834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693903174402451375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a1f994888a3b4fb488946609a31bdfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pushPower: 10
+  pushTime: 0.5
+  isDeadly: 1

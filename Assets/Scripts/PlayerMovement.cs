@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
+    [SerializeField] private LayerMask obstacleMasks;
+
     private CharacterController characterController;
     private float smoothVelocity;
     private bool isGrounded;
@@ -39,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
             animator.SetTrigger(jumpTrigger);
-            //Jump();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -84,8 +85,25 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(velocity * Time.deltaTime);
     }
 
-    private void Jump()
+    private void Jump()//Invoked in Animator
     {
         velocity.y = Mathf.Sqrt(-2 * jumpHeight * gravity);
+    }
+
+    private IEnumerator AddForce(Vector3 direction, float forcePower, float forceTime)
+    {
+        velocity = direction * forcePower;
+        yield return new WaitForSeconds(forceTime);
+        velocity = Vector3.zero;
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (LayerMaskCheck.IsInLayerMask(hit.gameObject, obstacleMasks))
+        {
+            Vector3 direction = (transform.position - hit.transform.position).normalized;
+            Obstacle swingingObstacle = hit.transform.GetComponent<Obstacle>();
+            StartCoroutine(AddForce(direction, swingingObstacle.pushPower, swingingObstacle.pushTime));
+        }
     }
 }
