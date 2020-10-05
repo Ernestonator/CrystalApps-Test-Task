@@ -15,7 +15,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
-    [SerializeField] private LayerMask obstacleMasks;
+    [SerializeField] private LayerMask swingingObstacleMask;
+    [SerializeField] private LayerMask spikeMask;
+    [SerializeField] private LayerMask rotatingObstacleMasks;
+    [SerializeField] private LayerMask gameManagerMask;
 
     private CharacterController characterController;
     private GameManager gameManager;
@@ -26,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
     private string jumpTrigger = "jump";
     private string crouchAnimatorBool = "isCrouching";
 
+    public static bool isBlocked;
+
     private Vector3 velocity;
 
     private void Start()
@@ -33,14 +38,19 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         gameManager = FindObjectOfType<GameManager>();
+
+        isBlocked = true;
     }
 
     private void Update()
     {
-        Move();
+        if (!isBlocked)
+        {
+            Move();
+        }
         AdjustGravity();
 
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             animator.SetTrigger(jumpTrigger);
         }
@@ -101,7 +111,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (LayerMaskCheck.IsInLayerMask(hit.gameObject, obstacleMasks))
+        if (LayerMaskCheck.IsInLayerMask(hit.gameObject, swingingObstacleMask))
+        {
+            Vector3 direction = (transform.position - hit.transform.position).normalized;
+            Obstacle obstacle = hit.transform.GetComponentInParent<Obstacle>();
+            StartCoroutine(AddForce(direction, obstacle.pushPower, obstacle.pushTime));
+
+            if (obstacle.isDeadly)
+            {
+                gameManager.SetFailPopUp();
+            }
+        }
+        if (LayerMaskCheck.IsInLayerMask(hit.gameObject, spikeMask, rotatingObstacleMasks)) 
         {
             Vector3 direction = (transform.position - hit.transform.position).normalized;
             Obstacle obstacle = hit.transform.GetComponent<Obstacle>();
@@ -112,5 +133,9 @@ public class PlayerMovement : MonoBehaviour
                 gameManager.SetFailPopUp();
             }
         }
+        //if (LayerMaskCheck.IsInLayerMask(hit.gameObject, gameManagerMask))
+        //{
+        //    gameManager.SetWinPopUp();
+        //}
     }
 }

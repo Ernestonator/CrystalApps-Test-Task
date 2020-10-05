@@ -264,6 +264,15 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  swingingObstacleMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  spikeMask:
+    serializedVersion: 2
+    m_Bits: 512
+  rotatingObstacleMasks:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!95 &425492177
 Animator:
   serializedVersion: 3

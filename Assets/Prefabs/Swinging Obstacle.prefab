@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0b52fa285c6cd425fa67377503d78c30, type: 2}
+  - {fileID: 2100000, guid: 7b52cd280ea9e4ec186961f2dcb82012, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -426,7 +426,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0b52fa285c6cd425fa67377503d78c30, type: 2}
+  - {fileID: 2100000, guid: 608a993f79ba2499781acd13b31194b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1090,10 +1090,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2895cd65122cc420496f6ce0c1f56639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maximumAngle: 30
-  angularVelocity: 1.5
   pushPower: 10
   pushTime: 0.5
+  isDeadly: 1
+  maximumAngle: 30
+  angularVelocity: 1.5
   rb: {fileID: 2180516636470097765}
 --- !u!54 &2180516636470097765
 Rigidbody:
