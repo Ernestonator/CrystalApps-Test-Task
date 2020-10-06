@@ -48,13 +48,8 @@ public class PlayerMovement : MonoBehaviour
         if (!isBlocked)
         {
             Move();
-            AdjustGravity();
         }
-        else
-        {
-            velocity.y = -0.1f;
-        }
-//
+        AdjustGravity();
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -139,9 +134,5 @@ public class PlayerMovement : MonoBehaviour
                 gameManager.SetFailPopUp();
             }
         }
-        //if (LayerMaskCheck.IsInLayerMask(hit.gameObject, gameManagerMask))
-        //{
-        //    gameManager.SetWinPopUp();
-        //}
     }
 }

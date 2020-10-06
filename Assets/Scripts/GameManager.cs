@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator Timer()
     {
         int timeInSec = 0;
+        timerText.text = "00:00";
 
         while (!hasWon)
         {
@@ -124,8 +125,8 @@ public class GameManager : MonoBehaviour
 
         if (hasWon)
         {
-            StartTimer();
             hasWon = false;
+            StartTimer();
         }
     }
 }
