@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: add timer and death counter
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 10f;
@@ -47,8 +48,13 @@ public class PlayerMovement : MonoBehaviour
         if (!isBlocked)
         {
             Move();
+            AdjustGravity();
         }
-        AdjustGravity();
+        else
+        {
+            velocity.y = -0.1f;
+        }
+//
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {

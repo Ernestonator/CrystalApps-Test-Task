@@ -1,23 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private LayerMask playerMask;
+
+    [Header("Start Position")]
     [SerializeField] private Transform startPosition;
 
+    [Header("Pop ups")]
     [SerializeField] private GameObject failWinPopUp;
     [SerializeField] private Text youWinFailText;
     [SerializeField] private Button restartButton;
-
+    [Space(10)]
     [SerializeField] private GameObject approvalPopUp;
     [SerializeField] private GameObject infoPopUp;
 
-    [SerializeField] private LayerMask playerMask;
+    [Header("Timer and Death Count")]
+    [SerializeField] private Text deathCountText;
+    [SerializeField] private Text timerText;
 
-    private PlayerMovement player;
+    private CharacterController player;
 
     private void Start()
     {
@@ -25,9 +28,9 @@ public class GameManager : MonoBehaviour
         approvalPopUp.SetActive(false);
         OpenHidePopUp(infoPopUp, true);
 
-        player = FindObjectOfType<PlayerMovement>();
+        player = FindObjectOfType<CharacterController>();
 
-        player.transform.position = startPosition.position;
+        ResetGame();
         restartButton.onClick.AddListener(() => ResetGame());
     }
 
@@ -77,6 +80,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
+        player.Move(startPosition.position - player.transform.position);
+        PlayerMovement.isBlocked = false;
     }
 }

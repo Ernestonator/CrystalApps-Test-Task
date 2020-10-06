@@ -1090,7 +1090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2895cd65122cc420496f6ce0c1f56639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushPower: 10
+  pushPower: 30
   pushTime: 0.5
   isDeadly: 1
   maximumAngle: 30
