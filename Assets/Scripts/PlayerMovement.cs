@@ -1,21 +1,31 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: add timer and death counter
+/// <summary>
+/// This script is responsible Player movement
+/// Player can move, jump and crouch.
+///
+/// How to use it:
+/// Drag Player prefab and Third Person Camera prefab to the scene.
+/// You have to put camera object to the cam variable.
+/// Third Person Camera prefab is already set. 
+/// </summary>
 public class PlayerMovement : MonoBehaviour
 {
+    [Tooltip("Third person camera"), SerializeField] private Transform cam;
+    [Tooltip("Speed with which we drag player to the ground"), SerializeField] private float gravity = -9.81f;
+
+    [Header("Movement")]
     [SerializeField] private float playerSpeed = 10f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private float smoothRotationSpeed = 0.1f;
-    [SerializeField] private float gravity = -9.81f;
 
-    [SerializeField] private Transform cam;
-
+    [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
+    [Header("Layer Masks")]
     [SerializeField] private LayerMask swingingObstacleMask;
     [SerializeField] private LayerMask spikeMask;
     [SerializeField] private LayerMask rotatingObstacleMasks;
@@ -23,16 +33,28 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController characterController;
     private GameManager gameManager;
-    private float smoothVelocity;
-    private bool isGrounded;
-
     private Animator animator;
-    private string jumpTrigger = "jump";
-    private string crouchAnimatorBool = "isCrouching";
 
+    private float smoothVelocity;
+    /// <summary>
+    /// Defines if player is on ground
+    /// </summary>
+    private bool isGrounded;
+    /// <summary>
+    /// Defines if player can move
+    /// </summary>
     public static bool isBlocked;
 
     private Vector3 velocity;
+
+    /// <summary>
+    /// name of jump trigger parameter from animator
+    /// </summary>
+    private string jumpTrigger = "jump";
+    /// <summary>
+    /// name of crouch bool parameter from animator
+    /// </summary>
+    private string crouchAnimatorBool = "isCrouching";
 
     private void Start()
     {
@@ -66,6 +88,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Moves and rotates Player in XZ Axis
+    /// </summary>
     private void Move()
     {
         float verticalMovement = Input.GetAxis("Vertical");
@@ -84,6 +109,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set Gravity to our player. It drags player to the ground when he is not grounded.
+    /// </summary>
     private void AdjustGravity()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -98,11 +126,22 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(velocity * Time.deltaTime);
     }
 
-    private void Jump()//Invoked in Animator
+    /// <summary>
+    /// Makes player Jump
+    /// It's invoked in jump animation
+    /// </summary>
+    private void Jump()
     {
         velocity.y = Mathf.Sqrt(-2 * jumpHeight * gravity);
     }
 
+    /// <summary>
+    /// Adds Force to player for chosen time
+    /// </summary>
+    /// <param name="direction">direction of force</param>
+    /// <param name="forcePower">Power of force</param>
+    /// <param name="forceTime">time in which player will be forced to move</param>
+    /// <returns></returns>
     private IEnumerator AddForce(Vector3 direction, float forcePower, float forceTime)
     {
         velocity = direction * forcePower;
@@ -110,29 +149,38 @@ public class PlayerMovement : MonoBehaviour
         velocity = Vector3.zero;
     }
 
+    /// <summary>
+    /// Handles all collisions
+    /// </summary>
+    /// <param name="hit"></param>
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        //Collision with swinging obstacle
         if (LayerMaskCheck.IsInLayerMask(hit.gameObject, swingingObstacleMask))
         {
-            Vector3 direction = (transform.position - hit.transform.position).normalized;
-            Obstacle obstacle = hit.transform.GetComponentInParent<Obstacle>();
-            StartCoroutine(AddForce(direction, obstacle.pushPower, obstacle.pushTime));
-
-            if (obstacle.isDeadly)
-            {
-                gameManager.SetFailPopUp();
-            }
+            AddForceToPlayer(hit, hit.transform.GetComponentInParent<Obstacle>());
         }
+        //Collision with other obstacles, like spike or rotating wall
         if (LayerMaskCheck.IsInLayerMask(hit.gameObject, spikeMask, rotatingObstacleMasks)) 
         {
-            Vector3 direction = (transform.position - hit.transform.position).normalized;
-            Obstacle obstacle = hit.transform.GetComponent<Obstacle>();
-            StartCoroutine(AddForce(direction, obstacle.pushPower, obstacle.pushTime));
+            AddForceToPlayer(hit, hit.transform.GetComponent<Obstacle>());
+        }
+    }
 
-            if (obstacle.isDeadly)
-            {
-                gameManager.SetFailPopUp();
-            }
+    /// <summary>
+    /// Adds force to the player in calculated direction.
+    /// </summary>
+    /// <param name="hit"></param>
+    /// <param name="obstacle"></param>
+    private void AddForceToPlayer(ControllerColliderHit hit, Obstacle obstacle)
+    {
+        Vector3 direction = (transform.position - hit.transform.position).normalized;
+        Obstacle _obstacle = obstacle;
+        StartCoroutine(AddForce(direction, _obstacle.pushPower, _obstacle.pushTime));
+
+        if (_obstacle.isDeadly)
+        {
+            gameManager.SetFailPopUp();
         }
     }
 }

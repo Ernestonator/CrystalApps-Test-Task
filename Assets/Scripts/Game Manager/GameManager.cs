@@ -39,8 +39,6 @@ public class GameManager : MonoBehaviour
 
         ResetGame();
         restartButton.onClick.AddListener(() => ResetGame());
-
-        StartTimer();
     }
 
     private void Update()
