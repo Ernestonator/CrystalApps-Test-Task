@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+#pragma warning disable CS0649
+
 /// <summary>
 /// This script is responsible Player movement
 /// Player can move, jump and crouch.

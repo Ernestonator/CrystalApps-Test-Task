@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+#pragma warning disable CS0649
 
 /// <summary>
 /// Script responsible for moving object between diffrent points.

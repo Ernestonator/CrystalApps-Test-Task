@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+#pragma warning disable CS0649
 
 /// <summary>
 /// Script responsible for game management.
