@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private int deathCount;
 
+    private bool hasTimerStarted;
+
     private void Start()
     {
         failWinPopUp.SetActive(false);
@@ -53,6 +55,7 @@ public class GameManager : MonoBehaviour
         OpenHidePopUp(infoPopUp, true);
 
         hasWon = false;
+        hasTimerStarted = false;
         deathCount = 0;
         deathCountText.text = "Death Count: " + deathCount;
 
@@ -85,21 +88,25 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Timer()
     {
-        int timeInSec = 0;
-        timerText.text = "00:00";
-
-        while (!hasWon)
+        if (!hasTimerStarted)
         {
-            yield return new WaitForSeconds(1);
-            timeInSec++;
+            hasTimerStarted = true;
+            int timeInSec = 0;
+            timerText.text = "00:00";
 
-            int minutes = timeInSec / 60;
-            int seconds = timeInSec % 60;
+            while (!hasWon)
+            {
+                yield return new WaitForSeconds(1);
+                timeInSec++;
 
-            string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
-            string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
+                int minutes = timeInSec / 60;
+                int seconds = timeInSec % 60;
 
-            timerText.text = minutesText + ":" + secondsText;
+                string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
+                string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
+
+                timerText.text = minutesText + ":" + secondsText;
+            }
         }
     }
 
@@ -169,6 +176,7 @@ public class GameManager : MonoBehaviour
         if (hasWon)
         {
             hasWon = false;
+            hasTimerStarted = false;
             StartTimer();
         }
     }

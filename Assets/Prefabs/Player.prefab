@@ -254,11 +254,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c924f0eafe67491091e832907fc8f36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  gravity: -19.62
   playerSpeed: 7
   jumpHeight: 3
   smoothRotationSpeed: 0.1
-  gravity: -19.62
-  cam: {fileID: 0}
   groundCheck: {fileID: 6482681911489359336}
   groundDistance: 0.3
   groundMask:
