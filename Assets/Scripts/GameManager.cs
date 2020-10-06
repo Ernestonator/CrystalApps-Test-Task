@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text timerText;
 
     private CharacterController player;
+    private bool hasWon;
+    private int deathCount;
 
     private void Start()
     {
@@ -28,10 +31,16 @@ public class GameManager : MonoBehaviour
         approvalPopUp.SetActive(false);
         OpenHidePopUp(infoPopUp, true);
 
+        hasWon = false;
+        deathCount = 0;
+        deathCountText.text = "Death Count: " + deathCount;
+
         player = FindObjectOfType<CharacterController>();
 
         ResetGame();
         restartButton.onClick.AddListener(() => ResetGame());
+
+        StartTimer();
     }
 
     private void Update()
@@ -42,16 +51,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StartTimer()
+    {
+        StartCoroutine(Timer());
+    }
+
+    private IEnumerator Timer()
+    {
+        int timeInSec = 0;
+
+        while (!hasWon)
+        {
+            yield return new WaitForSeconds(1);
+            timeInSec++;
+
+            int minutes = timeInSec / 60;
+            int seconds = timeInSec % 60;
+
+            string minutesText = minutes < 10 ? "0" + minutes : minutes.ToString();
+            string secondsText = seconds < 10 ? "0" + seconds : seconds.ToString();
+
+            timerText.text = minutesText + ":" + secondsText;
+        }
+    }
+
     public void SetFailPopUp()
     {
         OpenHidePopUp(failWinPopUp, true);
         youWinFailText.text = "You lose!";
+
+        deathCount++;
+        deathCountText.text = "Death Count: " + deathCount;
     }
 
     public void SetWinPopUp()
     {
         OpenHidePopUp(failWinPopUp, true);
         youWinFailText.text = "You win!";
+        hasWon = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -80,8 +117,15 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
-        //SceneManager.LoadScene(0);
-        player.Move(startPosition.position - player.transform.position);
+        player.enabled = false;
+        player.transform.position = startPosition.position;
+        player.enabled = true;
         PlayerMovement.isBlocked = false;
+
+        if (hasWon)
+        {
+            StartTimer();
+            hasWon = false;
+        }
     }
 }
