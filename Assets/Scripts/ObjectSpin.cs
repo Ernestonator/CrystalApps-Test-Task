@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script used for infinite object spinning.
+/// </summary>
 public class ObjectSpin : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed = 10;

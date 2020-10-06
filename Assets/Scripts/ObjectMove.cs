@@ -2,34 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script responsible for moving object between diffrent points.
+/// </summary>
 public class ObjectMove : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
 
-    [SerializeField] private Transform firstPoint;
-    [SerializeField] private Transform secondPoint;
+    [SerializeField] private Transform[] points;
 
     private Vector3 currentTarget;
+    private Transform currentPoint;
+    private int currentIndex;
 
     private void Start()
     {
-        transform.position = firstPoint.position;
+        currentIndex = 0;
+        currentPoint = points[currentIndex];
+        transform.position = currentPoint.position;
     }
 
     private void Update()
     {
-        MoveBetweeenTwoPoints();
+        MoveBetweeenPoints();
     }
 
-    private void MoveBetweeenTwoPoints()
+    /// <summary>
+    /// Moves object to next point
+    /// </summary>
+    private void MoveBetweeenPoints()
     {
-        if (transform.position == firstPoint.position)
+        if (transform.position == currentPoint.position)
         {
-            currentTarget = secondPoint.position;
-        }
-        else if(transform.position == secondPoint.position)
-        {
-            currentTarget = firstPoint.position;
+            currentIndex++;
+            if(currentIndex >= points.Length)
+            {
+                currentIndex = 0;
+            }
+            currentPoint = points[currentIndex]; 
+            currentTarget = currentPoint.position;
         }
 
         transform.position = Vector3.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);

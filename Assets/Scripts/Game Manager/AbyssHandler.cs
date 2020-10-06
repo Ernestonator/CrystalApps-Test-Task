@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Should be attached to object with trigger collider.
+/// It detects situation whenever player fells off to the abyss.
+/// </summary>
 public class AbyssHandler : MonoBehaviour
 {
     GameManager gameManager;

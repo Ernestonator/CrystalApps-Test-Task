@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Script responsible for swinging obstacle behaviour.
+/// It works like pendulum.
+///
+/// How to use it:
+/// Drag to the scene Swinging Obstacle prefab.
+/// When it's done set variables for the script as you want.
+/// </summary>
 public class SwingingObstacle : Obstacle
 {
-    [SerializeField] private float maximumAngle = 60f;
-    [SerializeField] private float angularVelocity = 10f;
+    [SerializeField, Tooltip("maximum angle, pendulum can tilt")] private float maximumAngle = 60f;
+    [SerializeField, Tooltip("Wobble velocity")] private float angularVelocity = 10f;
 
-    [SerializeField] private Rigidbody rb;
+    private Rigidbody rb;
 
     private void Start()
-    { 
+    {
+        rb = GetComponent<Rigidbody>();
         SetRandomStartingVelocityDirection();
     }
 
@@ -19,19 +28,25 @@ public class SwingingObstacle : Obstacle
         Swing();
     }
 
+    /// <summary>
+    /// Moves pendulum in direction.
+    /// </summary>
     private void Swing()
     {
-        if(transform.eulerAngles.z >= maximumAngle && transform.eulerAngles.z < 180)
+        if (transform.eulerAngles.z >= maximumAngle && transform.eulerAngles.z < 180)
         {
             rb.angularVelocity = Vector3.back * angularVelocity;
         }
-        else if (transform.eulerAngles.z <= 360-maximumAngle && transform.eulerAngles.z > 180)
+        else if (transform.eulerAngles.z <= 360 - maximumAngle && transform.eulerAngles.z > 180) 
         {
             rb.angularVelocity = Vector3.forward * angularVelocity;
         }
 
     }
 
+    /// <summary>
+    /// Sets random velocity direction on start.
+    /// </summary>
     private void SetRandomStartingVelocityDirection()
     {
         int[] randomDirection = new int[] { -1, 1 };
